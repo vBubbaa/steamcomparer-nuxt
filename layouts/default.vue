@@ -1,5 +1,6 @@
 <template>
   <v-app class="app-wrapper">
+    <!-- Side bar -->
     <v-navigation-drawer v-model="drawer" fixed app temporary color="#333333">
       <v-list>
         <v-list-item>
@@ -42,10 +43,12 @@
         <nuxt />
       </v-container>
     </v-main>
+    <!-- Footer -->
     <v-footer :absolute="fixed" app color="#333333">
       <v-container class="pa-0" fluid>
         <v-row justify="center" class="text-center">
           <v-col cols="12">
+            <!-- Contact links -->
             <a href="https://discord.gg/53axWUb" target="_blank">
               <v-btn class="mx-4" icon>
                 <v-icon color="white" size="30px">mdi-discord</v-icon>
@@ -59,6 +62,7 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
+        <!-- By yours, truly. -->
         <v-row justify="center" class="text-center">
           <v-col cols="12">
             A project by
@@ -95,6 +99,7 @@ export default {
 
 // Global styles
 <style>
+/* Default anchor styles */
 a {
   color: #e0e1dd !important;
   text-decoration: none !important;
@@ -104,16 +109,19 @@ a:hover {
   font-weight: bolder;
 }
 
+/* Active links red + bold */
 .nuxt-link-active {
   color: #ed254e !important;
   font-weight: bold !important;
 }
 
+/* Non-red links */
 .default-link {
   color: #e0e1dd !important;
   text-decoration: none !important;
 }
 
+/* Outside links = just red */
 .custom-link {
   color: #ed254e !important;
 }
