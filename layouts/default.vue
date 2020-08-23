@@ -51,12 +51,12 @@
             <!-- Contact links -->
             <a href="https://discord.gg/53axWUb" target="_blank">
               <v-btn class="mx-4" icon>
-                <v-icon color="white" size="30px">mdi-discord</v-icon>
+                <v-icon color="#ed254e" size="30px">mdi-discord</v-icon>
               </v-btn>
             </a>
             <a href="mailto:steamcomparer@gmail.com">
               <v-btn class="mx-4" icon>
-                <v-icon color="white" size="30px">mdi-email</v-icon>
+                <v-icon color="#ed254e" size="30px">mdi-email</v-icon>
               </v-btn>
             </a>
           </v-col>
@@ -128,6 +128,10 @@ a:hover {
 
 /* Outside links = just red */
 .custom-link {
+  color: #ed254e !important;
+}
+
+.contact-icon {
   color: #ed254e !important;
 }
 </style>
