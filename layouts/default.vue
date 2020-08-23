@@ -39,9 +39,9 @@
     </v-app-bar>
     <!-- Main content -->
     <v-main>
-      <v-container>
+      <div class="main-wrap">
         <nuxt />
-      </v-container>
+      </div>
     </v-main>
     <!-- Footer -->
     <v-footer :absolute="fixed" app color="#333333">
@@ -94,6 +94,11 @@ export default {
 <style scoped>
 .app-wrapper {
   background-color: #141414;
+}
+
+.main-wrap {
+  width: 100%;
+  height: 100%;
 }
 </style>
 
