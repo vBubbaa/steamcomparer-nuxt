@@ -1,67 +1,56 @@
 <template>
   <div>
     <v-parallax class="header-img" :src="require('@/assets/scheader-7.png')">
-      <v-row align="center" justify="center">
-        <v-col class="text-center" cols="12">
-          <h1>Compare. Share. Track.</h1>
-          <hr class="hr-divider" />
-        </v-col>
-      </v-row>
-      <v-row align="center" justify="center">
-        <v-col class="text-center" cols="12" sm="6">
-          <div>
-            <span class="data-number">{{ apps }}</span>
-            <br />
-            <h2>apps in our database.</h2>
-            <br />
-            <LinkButton
-              text="Browse Apps"
-              to="games"
-              icon="mdi-nintendo-game-boy"
-            />
-          </div>
-        </v-col>
-        <v-col class="text-center" cols="12" sm="6">
-          <div>
-            <span class="data-number">{{ logs }}</span>
-            <br />
-            <h2>apps updated today.</h2>
-            <br />
-            <LinkButton
-              text="Browse Changelogs"
-              to="changelogs"
-              icon="mdi-note-outline"
-            />
-          </div>
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row align="center" justify="center">
+          <v-col class="text-center" cols="12">
+            <h1 class="white-text">Compare. Share. Track.</h1>
+            <hr class="hr-divider" />
+          </v-col>
+        </v-row>
+        <v-row align="center" justify="center">
+          <v-col class="text-center" cols="12" sm="6">
+            <div>
+              <span class="data-number">{{ appscount }}</span>
+              <br />
+              <h2 class="white-text">apps in our database.</h2>
+              <br />
+              <LinkButton text="Browse Apps" to="games" icon="mdi-nintendo-game-boy" />
+            </div>
+          </v-col>
+          <v-col class="text-center" cols="12" sm="6">
+            <div>
+              <span class="data-number">{{ logs }}</span>
+              <br />
+              <h2 class="white-text">apps updated today.</h2>
+              <br />
+              <LinkButton text="Browse Changelogs" to="changelogs" icon="mdi-note-outline" />
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-parallax>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
+    <v-container>
+      <v-row>
+        <v-col cols="12" class="text-center recent-header">Recent Apps Added</v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12" sm="12" md="6" lg="4" v-for="app in apps" :key="app.id">
+          <MiniGameCard :app="app" />
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
 import LinkButton from "../components/LinkButton";
+import MiniGameCard from "../components/games/MiniGameCard";
 export default {
   components: {
-    LinkButton
-  },
-  data() {
-    return {
-      apps: {}
-    };
+    LinkButton,
+    MiniGameCard,
   },
   head() {
     return {
@@ -73,20 +62,22 @@ export default {
           hid: "description",
           name: "description",
           content:
-            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes."
-        }
-      ]
+            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes.",
+        },
+      ],
     };
   },
   // Get the number of apps in our database
   async asyncData({ $axios }) {
     // Get total # of apps in our database
-    const apps = await $axios.$get("/api/appcount/");
+    const appcount = await $axios.$get("/api/appcount/");
     // Get total # of logs created today
     const logs = await $axios.$get("/api/logstoday/");
+    // Get 9 most recent games
+    const apps = await $axios.$get("/api/recentgames/");
 
-    return { apps: apps.appcount, logs: logs.logcount };
-  }
+    return { appscount: appcount.appcount, logs: logs.logcount, apps: apps };
+  },
 };
 </script>
 
@@ -117,5 +108,15 @@ export default {
 
 .browsable-btn {
   color: #ed254e !important;
+}
+
+.recent-header {
+  color: #e0e1dd;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.white-text {
+  color: #e0e1dd;
 }
 </style>
