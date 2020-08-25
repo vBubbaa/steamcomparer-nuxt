@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Parallax header with app + log count -->
     <v-parallax class="header-img" :src="require('@/assets/scheader-7.png')">
       <v-container>
         <v-row align="center" justify="center">
@@ -20,7 +21,7 @@
           </v-col>
           <v-col class="text-center" cols="12" sm="6">
             <div>
-              <span class="data-number">{{ logs }}</span>
+              <span class="data-number">{{ logscount }}</span>
               <br />
               <h2 class="white-text">apps updated today.</h2>
               <br />
@@ -30,6 +31,8 @@
         </v-row>
       </v-container>
     </v-parallax>
+
+    <!-- Recent Apps -->
     <v-container>
       <v-row>
         <v-col cols="12" class="text-center recent-header">Recent Apps Added</v-col>
@@ -40,6 +43,18 @@
           <MiniGameCard :app="app" />
         </v-col>
       </v-row>
+
+      <!-- Recent change logs -->
+
+      <v-row>
+        <v-col cols="12" class="text-center recent-header">Recent Change Logs</v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <ChangeLogs :logs="logs" />
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -47,10 +62,13 @@
 <script>
 import LinkButton from "../components/LinkButton";
 import MiniGameCard from "../components/games/MiniGameCard";
+import ChangeLogs from "../components/games/ChangeLogs";
+
 export default {
   components: {
     LinkButton,
     MiniGameCard,
+    ChangeLogs,
   },
   head() {
     return {
@@ -72,11 +90,18 @@ export default {
     // Get total # of apps in our database
     const appcount = await $axios.$get("/api/appcount/");
     // Get total # of logs created today
-    const logs = await $axios.$get("/api/logstoday/");
+    const logcount = await $axios.$get("/api/logstoday/");
     // Get 9 most recent games
     const apps = await $axios.$get("/api/recentgames/");
+    // Get 10 most recent changelogs
+    const logs = await $axios.$get("/api/logs/");
 
-    return { appscount: appcount.appcount, logs: logs.logcount, apps: apps };
+    return {
+      appscount: appcount.appcount,
+      logscount: logcount.logcount,
+      apps: apps,
+      logs: logs,
+    };
   },
 };
 </script>
