@@ -76,7 +76,7 @@
       </v-col>
       <v-col v-if="app.community_visible_stats == true">
         <v-chip class="ma-2" color="#e0e1dd" outlined>
-          <v-icon color="#64e384" left>mdi-check</v-icon>Community Visible Stats
+          <v-icon color="#64e384" left>mdi-check</v-icon>Visible Community Stats
         </v-chip>
       </v-col>
       <v-col v-if="app.workshop_visible == true">
@@ -90,6 +90,7 @@
         </v-chip>
       </v-col>
     </v-row>
+
     <!-- Information tabs -->
     <v-card>
       <v-tabs background-color="#333333" center-active color="#ed254e" show-arrows fixed-tabs>
@@ -97,6 +98,7 @@
         <v-tab>Price History</v-tab>
         <v-tab>Change History</v-tab>
         <v-tab>Tags</v-tab>
+        <v-tab>Steamspy Data</v-tab>
 
         <!-- Information Content -->
         <v-tab-item>
@@ -104,10 +106,22 @@
             <v-simple-table>
               <template v-slot:default>
                 <tbody>
+                  <tr v-if="app.primary_genre">
+                    <td>Priamry Genre</td>
+                    <td>{{ app.primary_genre.genre_description }}</td>
+                  </tr>
+                  <tr v-if="app.steam_release_date">
+                    <td>Steam Release Date</td>
+                    <td>{{ app.steam_release_date }}</td>
+                  </tr>
+                  <tr v-if="app.app_type">
+                    <td>App Type</td>
+                    <td>{{ app.app_type.app_type }}</td>
+                  </tr>
                   <tr v-if="app.os.length > 0">
                     <td>Supported OS</td>
                     <td>
-                      <div v-for="os in app.os" :key="os" class="os-wrapper">
+                      <div v-for="os in app.os" :key="os.os" class="os-wrapper">
                         <v-icon v-if="os.os == 'WIN'">mdi-microsoft-windows</v-icon>
                         <v-icon v-else-if="os.os == 'MAC'">mdi-apple</v-icon>
                         <v-icon v-else>mdi-linux</v-icon>
@@ -204,21 +218,110 @@
         <!-- Price History -->
         <v-tab-item>
           <v-card flat>
-            <v-card-text>Price history</v-card-text>
+            <v-card-text
+              v-if="app.prices.length < 2"
+              class="text-center"
+            >No price history is available for this app.</v-card-text>
+            <v-card-text v-else>
+              <v-sheet color="#333333">
+                <v-sparkline
+                  :value="value"
+                  color="#e0e1dd"
+                  height="100"
+                  padding="24"
+                  stroke-linecap="round"
+                  smooth
+                >
+                  <template v-slot:label="item">${{ item.value }}</template>
+                </v-sparkline>
+              </v-sheet>
+            </v-card-text>
           </v-card>
         </v-tab-item>
 
         <!-- Change History -->
         <v-tab-item>
           <v-card flat>
-            <v-card-text>Change History</v-card-text>
+            <v-card-text>
+              <ChangeLogs :logs="logs" />
+            </v-card-text>
           </v-card>
         </v-tab-item>
 
         <!-- Tags -->
         <v-tab-item>
           <v-card flat>
-            <v-card-text>Tags</v-card-text>
+            <v-card-text>
+              <v-simple-table>
+                <template v-slot:default>
+                  <tbody>
+                    <tr v-if="app.genres.length > 0">
+                      <td>Genres</td>
+                      <td>
+                        <div v-for="g in app.genres" :key="g.id">{{ g.genre_description }}</div>
+                      </td>
+                    </tr>
+                    <tr v-if="app.categories.length > 0">
+                      <td>Categories</td>
+                      <td>
+                        <div v-for="c in app.categories" :key="c.id">{{ c.category_description}}</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+
+        <!-- Steamspy Stats -->
+        <v-tab-item v-if="steamspyData">
+          <v-card flat>
+            <v-card-text>
+              <v-simple-table>
+                <template v-slot:default>
+                  <tbody>
+                    <tr v-if="steamspyData.owners">
+                      <td>App Owners</td>
+                      <td>
+                        <div>{{ steamspyData.owners }}</div>
+                      </td>
+                    </tr>
+                    <tr v-if="steamspyData.ccu">
+                      <td>Peak Concurrent Users Yesterday</td>
+                      <td>
+                        <div>{{ steamspyData.ccu }}</div>
+                      </td>
+                    </tr>
+                    <tr v-if="steamspyData.average_forever">
+                      <td>Average Playtime Forever (hours)</td>
+                      <td>
+                        <div>{{ toHours(steamspyData.average_forever) }}</div>
+                      </td>
+                    </tr>
+                    <tr v-if="steamspyData.average_2weeks">
+                      <td>Average Playtime 2 Weeks (hours)</td>
+                      <td>
+                        <div>{{ toHours(steamspyData.average_2weeks) }}</div>
+                      </td>
+                    </tr>
+
+                    <tr v-if="steamspyData.median_forever">
+                      <td>Median Playtime Since 2009 (hours)</td>
+                      <td>
+                        <div>{{ toHours(steamspyData.median_forever) }}</div>
+                      </td>
+                    </tr>
+                    <tr v-if="steamspyData.median_2weeks">
+                      <td>Median Playtime 2 weeks (hours)</td>
+                      <td>
+                        <div>{{ toHours(steamspyData.median_2weeks) }}</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-card-text>
           </v-card>
         </v-tab-item>
       </v-tabs>
@@ -227,8 +330,17 @@
 </template>
 
 <script>
+import ChangeLogs from "../../../components/games/ChangeLogs";
+
 export default {
   name: "GameDetail",
+  components: {
+    ChangeLogs,
+  },
+  data: () => ({
+    // Holds price values used by sparkline
+    value: [],
+  }),
   head() {
     return {
       title: this.app.name + " | Steamcomaprer",
@@ -243,6 +355,13 @@ export default {
     };
   },
 
+  mounted() {
+    // Push prices into value[] to be used by sparkline
+    for (var key in this.app.prices) {
+      this.value.push(parseFloat(this.app.prices[key]["price"]));
+    }
+  },
+
   methods: {
     // Builds game icon links with icon value, and the ending extension (.jpeg, .ico, etc.)
     iconBuilder(val, extension) {
@@ -254,14 +373,26 @@ export default {
         extension
       );
     },
+
+    toHours(number) {
+      return (number / 60).toFixed(2);
+    },
   },
 
   async asyncData({ $axios, params }) {
     // Get app data
     const app = await $axios.$get("/api/games/" + params.id);
+    const logs = await $axios.$get("/api/gamelogs/" + params.id + "/");
+    const steamspyData = await $axios
+      .$get("/api/steamspy/" + params.id + "/")
+      .catch((err) => {
+        console.error(err);
+      });
 
     return {
       app: app,
+      logs: logs,
+      steamspyData: steamspyData,
     };
   },
 };
