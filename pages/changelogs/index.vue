@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-container v-if="$fetchState.pending">
-      <v-row justify="center" class="text-center">
-        <v-col cols="12">
-          <v-progress-circular :size="70" :width="7" color="#ed254e" indeterminate></v-progress-circular>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container v-else>
+    <v-container v-if="logs.length != 0">
       <v-row>
         <v-col cols="12">
           <v-text-field v-model="payload.search" @input="setSearchQuery()" color="#e0e1dd">
@@ -50,6 +43,7 @@ export default {
   data() {
     return {
       logs: [],
+      loading: false,
       payload: {
         page: "",
         search: "",
@@ -68,6 +62,7 @@ export default {
   },
 
   async fetch() {
+    console.log(this.$fetchState);
     if (this.payload.page == "") {
       this.logs = await this.$axios.$get("/api/alllogs/", {
         params: { page: 1, search: this.payload.search },
