@@ -29,7 +29,7 @@
 import GameTable from "../../../components/games/GameTable";
 
 export default {
-  name: "GenreDetail",
+  name: "genredetail",
   components: {
     GameTable,
   },

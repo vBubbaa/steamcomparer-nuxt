@@ -108,7 +108,12 @@
                 <tbody>
                   <tr v-if="app.primary_genre">
                     <td>Priamry Genre</td>
-                    <td>{{ app.primary_genre.genre_description }}</td>
+                    <td>
+                      <nuxt-link
+                        class="game-link"
+                        :to="{ name: 'genres-id-slug', params: { id: app.primary_genre.id, slug: slugify(app.primary_genre.genre_description) } }"
+                      >{{ app.primary_genre.genre_description }}</nuxt-link>
+                    </td>
                   </tr>
                   <tr v-if="app.steam_release_date">
                     <td>Steam Release Date</td>
@@ -179,13 +184,23 @@
                   <tr v-if="app.developer.length > 0">
                     <td>Developers</td>
                     <td>
-                      <div v-for="dev in app.developer" :key="dev.id">{{ dev.developer}}</div>
+                      <div v-for="dev in app.developer" :key="dev.id">
+                        <nuxt-link
+                          class="game-link"
+                          :to="{ name: 'developers-id-slug', params: { id: dev.id, slug: slugify(dev.developer)}}"
+                        >{{ dev.developer}}</nuxt-link>
+                      </div>
                     </td>
                   </tr>
                   <tr v-if="app.publisher.length > 0">
                     <td>Publishers</td>
                     <td>
-                      <div v-for="pub in app.publisher" :key="pub.id">{{ pub.publisher}}</div>
+                      <div v-for="pub in app.publisher" :key="pub.id">
+                        <nuxt-link
+                          class="game-link"
+                          :to="{ name: 'publishers-id-slug', params: { id: pub.id, slug: slugify(pub.publisher)}}"
+                        >{{ pub.publisher}}</nuxt-link>
+                      </div>
                     </td>
                   </tr>
                   <tr v-if="app.community_visible_stats">
@@ -258,7 +273,12 @@
                     <tr v-if="app.genres.length > 0">
                       <td>Genres</td>
                       <td>
-                        <div v-for="g in app.genres" :key="g.id">{{ g.genre_description }}</div>
+                        <div v-for="g in app.genres" :key="g.id">
+                          <nuxt-link
+                            class="game-link"
+                            :to="{ name: 'genres-id-slug', params: { id: g.id, slug: slugify(g.genre_description)}}"
+                          >{{ g.genre_description }}</nuxt-link>
+                        </div>
                       </td>
                     </tr>
                     <tr v-if="app.categories.length > 0">
@@ -331,6 +351,7 @@
 
 <script>
 import ChangeLogs from "../../../components/games/ChangeLogs";
+import slug from "slug";
 
 export default {
   name: "GameDetail",
@@ -372,6 +393,10 @@ export default {
         val +
         extension
       );
+    },
+
+    slugify(desc) {
+      return slug(desc);
     },
 
     toHours(number) {
