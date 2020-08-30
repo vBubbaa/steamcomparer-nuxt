@@ -75,7 +75,7 @@ export default {
           hid: "description",
           name: "description",
           content:
-            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes.",
+            "A list of all developers Steamcomparer has stored in our database.",
         },
       ],
     };

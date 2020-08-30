@@ -39,6 +39,20 @@ export default {
   components: {
     ChangeLogs,
   },
+  head() {
+    return {
+      title: "Steamcomparer | Changelog list",
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content:
+            "Steamcomparer tracks apps changes as soon as they hit Steam. Browse all of our recorded changes and search for changes you want to view.",
+        },
+      ],
+    };
+  },
   data() {
     return {
       logs: [],

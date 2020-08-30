@@ -46,14 +46,13 @@ export default {
 
   head() {
     return {
-      title: "Steamcomparer | ",
+      title: `Steamcomparer | ${this.$route.params.slug}`,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: "description",
           name: "description",
-          content:
-            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes.",
+          content: `View all games in Steamcomaprer's database with ${this.$route.params.slug} as their publisher.`,
         },
       ],
     };

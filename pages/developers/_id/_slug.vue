@@ -2,7 +2,7 @@
   <v-container v-if="apps.length != 0">
     <v-row justify="center" class="text-center">
       <v-col cols="12">
-        <v-icon color="#ed254e">mdi-tag</v-icon>
+        <v-icon color="#ed254e">mdi-alpha-d-circle-outline</v-icon>
         {{ this.$route.params.slug}}
       </v-col>
     </v-row>
@@ -46,14 +46,13 @@ export default {
 
   head() {
     return {
-      title: "Steamcomparer | ",
+      title: `Steamcomparer | ${this.$route.params.slug}`,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: "description",
           name: "description",
-          content:
-            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes.",
+          content: `View all games in Steamcomaprer's database with ${this.$route.params.slug} as their developer.`,
         },
       ],
     };

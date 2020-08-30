@@ -343,13 +343,13 @@ export default {
   }),
   head() {
     return {
-      title: this.app.name + " | Steamcomaprer",
+      title: `Steamcomaprer | ${this.app.name}`,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: "description",
           name: "description",
-          content: "Game desc.",
+          content: `View detailed information about ${this.app.name}, including price information, change history, game support, and more.`,
         },
       ],
     };

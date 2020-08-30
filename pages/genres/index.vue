@@ -68,14 +68,14 @@ export default {
   },
   head() {
     return {
-      title: "Steamcomparer | ",
+      title: "Steamcomparer | Genres",
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: "description",
           name: "description",
           content:
-            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes.",
+            "A list of all genres Steamcomparer has stored in our database.",
         },
       ],
     };
