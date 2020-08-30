@@ -3,11 +3,7 @@
     <v-container v-if="genres.length != 0">
       <v-row>
         <v-col cols="12">
-          <v-text-field
-            v-model="payload.search"
-            @input="setSearchQuery()"
-            color="#e0e1dd"
-          >
+          <v-text-field v-model="payload.search" @input="setSearchQuery()" color="#e0e1dd">
             <template v-slot:label>
               Search for genres
               <v-icon style="vertical-align: middle">mdi-magnify</v-icon>
@@ -33,9 +29,7 @@
                       :to="
                         '/genres/' + g.id + '/' + slugify(g.genre_description)
                       "
-                    >
-                      {{ g.genre_description }}
-                    </nuxt-link>
+                    >{{ g.genre_description }}</nuxt-link>
                   </td>
                   <td>{{ g.game_count }}</td>
                 </tr>
@@ -68,8 +62,22 @@ export default {
       genres: [],
       payload: {
         page: "",
-        search: ""
-      }
+        search: "",
+      },
+    };
+  },
+  head() {
+    return {
+      title: "Steamcomparer | ",
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content:
+            "Steamcomparer allows you to compare your steam libraries with friends. It tracks Steam app changes as soon as they happen on steam and records a history of steam changes.",
+        },
+      ],
     };
   },
   methods: {
@@ -77,26 +85,26 @@ export default {
       this.payload.page = page;
       this.$fetch();
     },
-    setSearchQuery: function() {
+    setSearchQuery: function () {
       this.payload.page = 1;
       this.$fetch();
     },
     slugify(desc) {
       return slug(desc);
-    }
+    },
   },
 
   async fetch() {
     if (this.payload.page == "") {
       this.genres = await this.$axios.$get("/api/genres/", {
-        params: { page: 1, search: this.payload.search }
+        params: { page: 1, search: this.payload.search },
       });
     } else {
       this.genres = await this.$axios.$get("/api/genres/", {
-        params: this.payload
+        params: this.payload,
       });
     }
-  }
+  },
 };
 </script>
 
