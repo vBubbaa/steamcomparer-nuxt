@@ -33,7 +33,6 @@
 
 <script>
 import ChangeLogs from "../../components/games/ChangeLogs";
-import mapState from "vuex";
 
 export default {
   name: "ChangeLogsListView",
@@ -43,7 +42,6 @@ export default {
   data() {
     return {
       logs: [],
-      loading: false,
       payload: {
         page: "",
         search: "",
@@ -62,7 +60,6 @@ export default {
   },
 
   async fetch() {
-    console.log(this.$fetchState);
     if (this.payload.page == "") {
       this.logs = await this.$axios.$get("/api/alllogs/", {
         params: { page: 1, search: this.payload.search },
