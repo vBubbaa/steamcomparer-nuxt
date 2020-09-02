@@ -1,26 +1,19 @@
-import Vue from "vue";
-import Vuex from "vuex";
 import axios from "axios";
 
-Vue.use(Vuex);
+export const state = () => ({
+  user: {}
+});
 
-const store = () =>
-  new Vuex.Store({
-    state: {
-      user: {}
-    },
+export const mutations = {
+  SET_USER(state, user) {
+    state.user = user;
+  }
+};
 
-    getters: {
-      getUser(state) {
-        return state.user;
-      }
-    },
-    mutations: {
-      SET_USER(state, user) {
-        state.user = user;
-      }
-    },
-    actions: {}
-  });
+export const actions = {};
 
-export default store;
+export const getters = {
+  getUser(state) {
+    return state.user;
+  }
+};
