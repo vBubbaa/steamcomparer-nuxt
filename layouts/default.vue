@@ -36,6 +36,37 @@
       <v-btn text>
         <nuxt-link to="/games">Games</nuxt-link>
       </v-btn>
+      <!-- User not auth -->
+      <v-btn text v-if="!Object.entries(user).length">
+        <a href="http://127.0.0.1:8000/openid/steam/login/">login</a>
+      </v-btn>
+      <!-- User is auth -->
+      <v-menu open-on-hover offset-y  v-if="Object.entries(user).length">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn text v-bind="attrs"
+            v-on="on">
+          {{ user.personaname }} 
+        </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <nuxt-link to="/games">
+            Profile Overview
+            </nuxt-link>
+          </v-list-item>
+          <v-list-item>
+            <nuxt-link to="/games">
+            Compare Libraries
+            </nuxt-link>
+          </v-list-item>
+          <v-list-item>
+            <div class="fake-link" @click="logout()">
+            Logout
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <!-- Main content -->
     <v-main>
@@ -88,6 +119,53 @@ export default {
       title: "Steam Comparer",
     };
   },
+
+  methods: {
+    // Grab the steam_data cookie with the user information returned from steam
+    getCookieValue(cookieName) {
+      var name = cookieName + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+
+    // Commit store logout
+    logout() {
+      this.$store.commit("LOGOUT");
+    }
+  },
+
+  // Check for auth cookie 
+  mounted() {
+    // Format the cookie to correct JSON and parse it
+    if (this.getCookieValue("steam_data") != "") {
+      let user = this.getCookieValue("steam_data").replace(/\\054/g, ",");
+      user = user
+        .replace(/'/g, '"')
+        .replace(/"{/g, "{")
+        .replace(/}"/g, "}");
+      user = JSON.parse(user);
+      // Update the vuex state user to the new logged in user
+      this.$store.commit("SET_USER", user);
+    } else {
+      console.log("no user");
+    }
+  },
+
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  }
 };
 </script>
 
@@ -111,6 +189,16 @@ a {
 }
 
 a:hover {
+  font-weight: bolder;
+}
+
+.fake-link {
+  color: #e0e1dd !important;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.fake-link:hover {
   font-weight: bolder;
 }
 
