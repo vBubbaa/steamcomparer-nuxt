@@ -404,14 +404,17 @@ export default {
     },
   },
 
-  async asyncData({ $axios, params }) {
+  async asyncData({ $axios, params, error }) {
     // Get app data
     const app = await $axios.$get("/api/games/" + params.id);
     const logs = await $axios.$get("/api/gamelogs/" + params.id + "/");
     const steamspyData = await $axios
       .$get("/api/steamspy/" + params.id + "/")
       .catch((err) => {
-        console.error(err);
+        error({
+          statusCode: 404,
+          message: "Game not found.",
+        });
       });
 
     return {
