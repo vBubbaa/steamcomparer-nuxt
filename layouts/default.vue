@@ -41,29 +41,20 @@
         <a href="http://127.0.0.1:8000/openid/steam/login/">login</a>
       </v-btn>
       <!-- User is auth -->
-      <v-menu open-on-hover offset-y  v-if="Object.entries(user).length">
+      <v-menu open-on-hover offset-y v-if="Object.entries(user).length">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn text v-bind="attrs"
-            v-on="on">
-          {{ user.personaname }} 
-        </v-btn>
+          <v-btn text v-bind="attrs" v-on="on">{{ user.personaname }}</v-btn>
         </template>
 
         <v-list>
           <v-list-item>
-            <nuxt-link to="/games">
-            Profile Overview
-            </nuxt-link>
+            <nuxt-link :to="{ name: 'user-id', params: { id: user.steamid }}">Profile Overview</nuxt-link>
           </v-list-item>
           <v-list-item>
-            <nuxt-link to="/games">
-            Compare Libraries
-            </nuxt-link>
+            <nuxt-link to="/games">Compare Libraries</nuxt-link>
           </v-list-item>
           <v-list-item>
-            <div class="fake-link" @click="logout()">
-            Logout
-            </div>
+            <div class="fake-link" @click="logout()">Logout</div>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -141,18 +132,15 @@ export default {
     // Commit store logout
     logout() {
       this.$store.commit("LOGOUT");
-    }
+    },
   },
 
-  // Check for auth cookie 
+  // Check for auth cookie
   mounted() {
     // Format the cookie to correct JSON and parse it
     if (this.getCookieValue("steam_data") != "") {
       let user = this.getCookieValue("steam_data").replace(/\\054/g, ",");
-      user = user
-        .replace(/'/g, '"')
-        .replace(/"{/g, "{")
-        .replace(/}"/g, "}");
+      user = user.replace(/'/g, '"').replace(/"{/g, "{").replace(/}"/g, "}");
       user = JSON.parse(user);
       // Update the vuex state user to the new logged in user
       this.$store.commit("SET_USER", user);
@@ -163,9 +151,9 @@ export default {
 
   computed: {
     user() {
-      return this.$store.state.user
-    }
-  }
+      return this.$store.state.user;
+    },
+  },
 };
 </script>
 

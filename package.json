@@ -11,7 +11,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.1",
     "nuxt": "^2.14.0",
-    "slug": "^3.3.4"
+    "slug": "^3.3.4",
+    "vue-country-flag": "^2.0.1"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2"
