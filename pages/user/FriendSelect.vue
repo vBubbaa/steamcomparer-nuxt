@@ -40,6 +40,13 @@
         />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <nuxt-link :to="{ name: 'user-compare', params: { selectedFriends } }">
+          <v-btn color="#ed254e" text outlined>Compare</v-btn>
+        </nuxt-link>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
