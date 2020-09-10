@@ -51,7 +51,7 @@
             <nuxt-link :to="{ name: 'user-id', params: { id: user.steamid }}">Profile Overview</nuxt-link>
           </v-list-item>
           <v-list-item>
-            <nuxt-link to="/games">Compare Libraries</nuxt-link>
+            <nuxt-link :to="{ name: 'user-FriendSelect'}">Compare Libraries</nuxt-link>
           </v-list-item>
           <v-list-item>
             <div class="fake-link" @click="logout()">Logout</div>
