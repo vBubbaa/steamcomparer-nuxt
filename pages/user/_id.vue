@@ -257,8 +257,15 @@
       </v-row>
       <v-row v-else>
         <v-col cols="12" class="text-center">User Library</v-col>
-        <v-col cols="4" md="6" sm="12" v-for="app in games.games" :key="app.appid">
-          <MiniGameCard :app="app" />
+        <v-col cols="12">
+          <v-data-table :headers="headers" :items="games" :items-per-page="10" class="elevation-1">
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <template v-slot:item.image="{ item }">
+              <div class="p-2">
+                <v-img :src="item.image" :alt="item.name" height="200" contain></v-img>
+              </div>
+            </template>
+          </v-data-table>
         </v-col>
       </v-row>
     </v-card>
@@ -293,10 +300,31 @@ export default {
   data() {
     return {
       games: null,
-      pagination: {
-        page: 1,
-        pageLen: 3,
-      },
+      headers: [
+        {
+          text: "App",
+          value: "image",
+          sortable: false,
+        },
+        {
+          text: "Name",
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        {
+          text: "App ID",
+          value: "appid",
+        },
+        {
+          text: "Total Playtime",
+          value: "total_playtime",
+        },
+        {
+          text: "Current Price",
+          value: "current_price",
+        },
+      ],
     };
   },
 
@@ -327,7 +355,8 @@ export default {
       let res = await this.$axios.$get(
         `/api/user/useroverview/${this.$route.params.id}/games/`
       );
-      this.games = res;
+      console.log(res);
+      this.games = res.games;
     },
   },
 };
