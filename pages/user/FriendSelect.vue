@@ -43,7 +43,7 @@
     <v-row>
       <v-col>
         <nuxt-link :to="{ name: 'user-compare', params: { selectedFriends } }">
-          <v-btn color="#ed254e" text outlined>Compare</v-btn>
+          <v-btn color="#ed254e" @click="handleSubmit()" text outlined>Compare</v-btn>
         </nuxt-link>
       </v-col>
     </v-row>
@@ -80,6 +80,11 @@ export default {
         this.selectedFriends.push(payload);
       }
     },
+
+    handleSubmit() {
+      // Save compared friends in vuex state so we can refresh compare page on page back
+      this.$store.commit("SET_COMPARED_FRIENDS", this.selectedFriends);
+    },
   },
 
   mounted() {
@@ -88,7 +93,6 @@ export default {
       this.friends = this.$store.state.friendList;
       //  If we don't have a friends list, then fetch the data
     } else {
-      console.log("Dispatch...");
       this.$store
         .dispatch("fetchFriendList", this.$store.state.user.steamid)
         .then(() => {

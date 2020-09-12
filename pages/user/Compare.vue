@@ -13,11 +13,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col
-        v-for="friend in $route.params.selectedFriends"
-        :key="friend.steamid"
-        class="text-center"
-      >
+      <v-col v-for="friend in friends" :key="friend.steamid" class="text-center">
         <nuxt-link :to="{ name: 'user-id', params: { id: friend.steamid }}">
           <v-badge :value="hover" :content="friend.personaname" top transition="slide-y-transition">
             <v-hover v-model="hover">
@@ -50,19 +46,20 @@ export default {
       hover: false,
     };
   },
-  async asyncData({ $axios, params }) {
+  async asyncData({ $axios, params, store }) {
     // Build steamids arr for POST request
+    let friends = store.state.comparedFriends;
     let sids = [];
-    params.selectedFriends.forEach((friend) => {
+    friends.forEach((friend) => {
       sids.push(friend.steamid);
     });
-    console.log(sids);
     // Get total # of apps in our database
     const sharedgames = await $axios.$get("/api/user/compare/", {
       params: sids,
     });
     return {
       sharedgames: sharedgames,
+      friends: friends,
     };
   },
 };

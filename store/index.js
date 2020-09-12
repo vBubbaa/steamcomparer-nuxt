@@ -1,11 +1,15 @@
-import axios from "axios";
-
 export const state = () => ({
   user: {},
-  friendList: {}
+  friendList: {},
+  comparedFriends: []
 });
 
 export const mutations = {
+  // Set compared SIDS, so we can save the ids if we click and game on the compare page and go back (it will reload the compared games)
+  SET_COMPARED_FRIENDS(state, friends) {
+    state.comparedFriends = friends;
+  },
+
   // Set user to state
   SET_USER(state, user) {
     state.user = user;
@@ -24,6 +28,10 @@ export const mutations = {
 };
 
 export const getters = {
+  getComparedFriends(state) {
+    return state.comparedFriends;
+  },
+
   getUser(state) {
     return state.user;
   },
