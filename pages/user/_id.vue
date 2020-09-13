@@ -259,7 +259,6 @@
         <v-col cols="12" class="text-center">User Library</v-col>
         <v-col cols="12">
           <v-data-table :headers="headers" :items="games" :items-per-page="10" class="elevation-1">
-            <!-- eslint-disable-next-line vue/no-v-html -->
             <template v-slot:item.image="{ item }">
               <div class="p-2">
                 <v-img :src="item.image" :alt="item.name" height="200" contain></v-img>
@@ -285,13 +284,13 @@ export default {
   },
   head() {
     return {
-      title: "Steam User - :id",
+      title: `Steam User - ${this.userdata.userdetails.response.players.player[0].personaname}`,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: "description",
           name: "description",
-          content: "Steam profile overview for :personaname.",
+          content: `Steam profile overview for ${this.userdata.userdetails.response.players.player[0].personaname}, including Vac Ban information and the user's game library.`,
         },
       ],
     };

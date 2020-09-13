@@ -16,10 +16,10 @@
         <v-list-item>
           <nuxt-link to="/developers">Developers</nuxt-link>
         </v-list-item>
-        <v-divider></v-divider>
+        <!-- <v-divider></v-divider>
         <v-list-item>
           <nuxt-link to="/blog">Blog</nuxt-link>
-        </v-list-item>
+        </v-list-item>-->
         <v-divider></v-divider>
         <v-list-item>
           <nuxt-link to="/about">About</nuxt-link>
@@ -132,6 +132,7 @@ export default {
     // Commit store logout
     logout() {
       this.$store.commit("LOGOUT");
+      this.$router.push("/");
     },
   },
 

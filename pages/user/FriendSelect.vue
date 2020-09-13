@@ -41,9 +41,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col cols="12">
         <nuxt-link :to="{ name: 'user-compare', params: { selectedFriends } }">
-          <v-btn color="#ed254e" @click="handleSubmit()" text outlined>Compare</v-btn>
+          <v-btn width="100%" color="#ed254e" outlined tile @click="handleSubmit()">Compare</v-btn>
         </nuxt-link>
       </v-col>
     </v-row>
@@ -99,6 +99,21 @@ export default {
           this.friends = this.$store.state.friendList;
         });
     }
+  },
+
+  head() {
+    return {
+      title: `SteamComparer | Friend Select`,
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content:
+            "Select the friends in which you want to compare steam app libraries with.",
+        },
+      ],
+    };
   },
 
   computed: {
