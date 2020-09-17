@@ -4,7 +4,7 @@ module.exports = {
       name: "steamcomparer-nuxt",
       exec_mode: "cluster",
       instances: "max",
-      scripts: "./node_modules/nuxt/bin/nuxt.js",
+      script: "./node_modules/nuxt/bin/nuxt.js",
       args: "start"
     }
   ]
