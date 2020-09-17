@@ -38,7 +38,7 @@
       </v-btn>
       <!-- User not auth -->
       <v-btn text v-if="!Object.entries(user).length">
-        <a href="http://127.0.0.1:8000/openid/steam/login/">login</a>
+        <a :href="loginLink()">login</a>
       </v-btn>
       <!-- User is auth -->
       <v-menu open-on-hover offset-y v-if="Object.entries(user).length">
@@ -133,6 +133,14 @@ export default {
     logout() {
       this.$store.commit("LOGOUT");
       this.$router.push("/");
+    },
+
+    loginLink() {
+      if (process.env.NODE_ENV == "production") {
+        return "https://steamcomparer.com/openid/steam/login/";
+      } else {
+        return "http://127.0.0.1:8000/openid/steam/login/";
+      }
     },
   },
 
