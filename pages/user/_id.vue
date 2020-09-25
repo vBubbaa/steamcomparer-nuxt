@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <v-alert dense dismissible type="error" v-if="errorCatch">
+      An error has occured fetching your game library. Try again in a few
+      seconds.
+    </v-alert>
     <v-card color="#333333" class="pa-3">
       <v-row justify="center" class="text-center">
         <v-col cols="12">
@@ -11,9 +15,9 @@
             />
           </v-avatar>
           <div class="d-flex justify-center align-center">
-            <span
-              class="plain-text user--name"
-            >{{ userdata.userdetails.response.players.player[0].personaname }}</span>
+            <span class="plain-text user--name">{{
+              userdata.userdetails.response.players.player[0].personaname
+            }}</span>
             <country-flag
               :country="
                 userdata.userdetails.response.players.player[0].loccountrycode
@@ -42,7 +46,7 @@
                     "
                   >
                     {{
-                    userdata.userdetails.response.players.player[0].steamid
+                      userdata.userdetails.response.players.player[0].steamid
                     }}
                   </td>
                   <td v-else>N/A</td>
@@ -55,10 +59,10 @@
                     "
                   >
                     {{
-                    epochToDate(
-                    userdata.userdetails.response.players.player[0]
-                    .lastlogoff
-                    )
+                      epochToDate(
+                        userdata.userdetails.response.players.player[0]
+                          .lastlogoff
+                      )
                     }}
                   </td>
                   <td v-else>N/A</td>
@@ -72,10 +76,10 @@
                     "
                   >
                     {{
-                    epochToDate(
-                    userdata.userdetails.response.players.player[0]
-                    .timecreated
-                    )
+                      epochToDate(
+                        userdata.userdetails.response.players.player[0]
+                          .timecreated
+                      )
                     }}
                   </td>
                   <td v-else>N/A</td>
@@ -97,8 +101,8 @@
                       class="td-link"
                     >
                       {{
-                      userdata.userdetails.response.players.player[0]
-                      .profileurl
+                        userdata.userdetails.response.players.player[0]
+                          .profileurl
                       }}
                     </a>
                   </td>
@@ -120,7 +124,7 @@
                       class="td-link"
                     >
                       {{
-                      userdata.userdetails.response.players.player[0].avatar
+                        userdata.userdetails.response.players.player[0].avatar
                       }}
                     </a>
                   </td>
@@ -144,8 +148,8 @@
                       target="_blank"
                     >
                       {{
-                      userdata.userdetails.response.players.player[0]
-                      .avatarmedium
+                        userdata.userdetails.response.players.player[0]
+                          .avatarmedium
                       }}
                     </a>
                   </td>
@@ -168,8 +172,8 @@
                       target="_blank"
                     >
                       {{
-                      userdata.userdetails.response.players.player[0]
-                      .avatarfull
+                        userdata.userdetails.response.players.player[0]
+                          .avatarfull
                       }}
                     </a>
                   </td>
@@ -184,7 +188,7 @@
                     class="overflow"
                   >
                     {{
-                    userdata.userdetails.response.players.player[0].avatarhash
+                      userdata.userdetails.response.players.player[0].avatarhash
                     }}
                   </td>
                   <td v-else>N/A</td>
@@ -206,42 +210,50 @@
                   <td>Community Banned</td>
                   <td
                     v-if="userdata.vacinfo.players[0].CommunityBanned != null"
-                  >{{ userdata.vacinfo.players[0].CommunityBanned }}</td>
+                  >
+                    {{ userdata.vacinfo.players[0].CommunityBanned }}
+                  </td>
                   <td v-else>N/A</td>
                 </tr>
                 <tr>
                   <td>VAC Banned</td>
-                  <td
-                    v-if="userdata.vacinfo.players[0].VACBanned != null"
-                  >{{ userdata.vacinfo.players[0].VACBanned }}</td>
+                  <td v-if="userdata.vacinfo.players[0].VACBanned != null">
+                    {{ userdata.vacinfo.players[0].VACBanned }}
+                  </td>
                   <td v-else>N/A</td>
                 </tr>
                 <tr>
                   <td>Economy Banned</td>
-                  <td
-                    v-if="userdata.vacinfo.players[0].EconomyBan != null"
-                  >{{ userdata.vacinfo.players[0].EconomyBan }}</td>
+                  <td v-if="userdata.vacinfo.players[0].EconomyBan != null">
+                    {{ userdata.vacinfo.players[0].EconomyBan }}
+                  </td>
                   <td v-else>N/A</td>
                 </tr>
                 <tr>
                   <td># VAC Bans</td>
                   <td
                     v-if="userdata.vacinfo.players[0].NumberOfVACBans != null"
-                  >{{ userdata.vacinfo.players[0].NumberOfVACBans }}</td>
+                  >
+                    {{ userdata.vacinfo.players[0].NumberOfVACBans }}
+                  </td>
                   <td v-else>N/A</td>
                 </tr>
                 <tr>
                   <td>Days Since Last Ban</td>
                   <td
                     v-if="userdata.vacinfo.players[0].DaysSinceLastBan != null"
-                  >{{ userdata.vacinfo.players[0].DaysSinceLastBan }}</td>
+                  >
+                    {{ userdata.vacinfo.players[0].DaysSinceLastBan }}
+                  </td>
                   <td v-else>N/A</td>
                 </tr>
                 <tr>
                   <td># Of Game Bans</td>
                   <td
                     v-if="userdata.vacinfo.players[0].NumberOfGameBans != null"
-                  >{{ userdata.vacinfo.players[0].NumberOfGameBans }}</td>
+                  >
+                    {{ userdata.vacinfo.players[0].NumberOfGameBans }}
+                  </td>
                   <td v-else>N/A</td>
                 </tr>
               </tbody>
@@ -252,16 +264,32 @@
       <v-divider></v-divider>
       <v-row v-if="games == null">
         <v-col cols="12">
-          <v-btn width="100%" color="#ed254e" @click="loadGames()">Load User Games</v-btn>
+          <v-btn
+            width="100%"
+            color="#ed254e"
+            :disabled="timeout"
+            @click="loadGames()"
+            >Load User Games</v-btn
+          >
         </v-col>
       </v-row>
       <v-row v-else>
         <v-col cols="12" class="text-center">User Library</v-col>
         <v-col cols="12">
-          <v-data-table :headers="headers" :items="games" :items-per-page="10" class="elevation-1">
+          <v-data-table
+            :headers="headers"
+            :items="games"
+            :items-per-page="10"
+            class="elevation-1"
+          >
             <template v-slot:item.image="{ item }">
               <div class="p-2">
-                <v-img :src="item.image" :alt="item.name" height="200" contain></v-img>
+                <v-img
+                  :src="item.image"
+                  :alt="item.name"
+                  height="200"
+                  contain
+                ></v-img>
               </div>
             </template>
           </v-data-table>
@@ -299,6 +327,8 @@ export default {
   data() {
     return {
       games: null,
+      timeout: false,
+      errorCatch: false,
       headers: [
         {
           text: "App",
@@ -351,11 +381,17 @@ export default {
     },
 
     async loadGames() {
-      let res = await this.$axios.$get(
-        `/api/user/useroverview/${this.$route.params.id}/games/`
-      );
-      console.log(res);
-      this.games = res.games;
+      try {
+        let res = await this.$axios.$get(
+          `/api/user/useroverview/${this.$route.params.id}/games/`
+        );
+        this.games = res.games;
+        this.errorCatch = false;
+      } catch (error) {
+        this.errorCatch = true;
+        this.timeout = true;
+        setTimeout(() => (this.timeout = false), 10000);
+      }
     },
   },
 };
