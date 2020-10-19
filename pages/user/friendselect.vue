@@ -23,23 +23,6 @@
         <v-text-field label="Search Friends List" color="#ed254e" v-model="search"></v-text-field>
       </v-col>
     </v-row>
-    <v-row justify="center">
-      <v-col
-        v-for="friend in filterFriends"
-        :key="friend.player[0].steamid"
-        xs="6"
-        sm="4"
-        md="3"
-        lg="3"
-        xl="3"
-      >
-        <UserCard
-          :user="friend.player[0]"
-          @selectFriend="handleSelect"
-          :selectedList="selectedFriends"
-        />
-      </v-col>
-    </v-row>
     <v-row>
       <v-col cols="12">
         <nuxt-link :to="{ name: 'user-compare', params: { selectedFriends } }">
@@ -47,15 +30,32 @@
         </nuxt-link>
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-col
+        v-for="friend in filterFriends"
+        :key="friend.player[0].steamid"
+        cols="12"
+        md="6"
+        lg="4"
+        xl="4"
+      >
+        <UserListItem
+          :user="friend.player[0]"
+          @selectFriend="handleSelect"
+          :selectedList="selectedFriends"
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-import UserCard from "../../components/user/UserCard";
+import UserListItem from "../../components/user/UserListItem"
+
 export default {
   name: "friendselect",
   components: {
-    UserCard,
+    UserListItem,
   },
   data() {
     return {

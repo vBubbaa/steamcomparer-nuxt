@@ -65,27 +65,27 @@
     <v-row justify="center" class="text-center">
       <!-- Release state -->
       <v-col v-if="app.release_state == 'released'">
-        <v-chip class="ma-2" color="#e0e1dd" outlined>
+        <v-chip class="ma-2" color="#333333">
           <v-icon color="#64e384" left>mdi-check</v-icon>Full Release
         </v-chip>
       </v-col>
       <v-col v-if="app.controller_support == 'full'">
-        <v-chip class="ma-2" color="#e0e1dd" outlined>
+        <v-chip class="ma-2" color="#333333">
           <v-icon color="#64e384" left>mdi-check</v-icon>Full Controller Support
         </v-chip>
       </v-col>
       <v-col v-if="app.community_visible_stats == true">
-        <v-chip class="ma-2" color="#e0e1dd" outlined>
+        <v-chip class="ma-2" color="#333333">
           <v-icon color="#64e384" left>mdi-check</v-icon>Visible Community Stats
         </v-chip>
       </v-col>
       <v-col v-if="app.workshop_visible == true">
-        <v-chip class="ma-2" color="#e0e1dd" outlined>
+        <v-chip class="ma-2" color="#333333">
           <v-icon color="#64e384" left>mdi-check</v-icon>Visible Workshop
         </v-chip>
       </v-col>
       <v-col v-if="app.community_hub_visible == true">
-        <v-chip class="ma-2" color="#e0e1dd" outlined>
+        <v-chip class="ma-2" color="#333333">
           <v-icon color="#64e384" left>mdi-check</v-icon>Visible Community Hub
         </v-chip>
       </v-col>
@@ -364,7 +364,7 @@ export default {
   }),
   head() {
     return {
-      title: `Steamcomaprer | ${this.app.name}`,
+      title: `Steamcomparer | ${this.app.name}`,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
@@ -455,5 +455,10 @@ export default {
 
 .os-wrapper {
   display: inline-block;
+}
+
+.theme--dark.v-chip:not(.v-chip--active) {
+  background-color: #333333 !important;
+  background: #333333 !important;
 }
 </style>
