@@ -143,6 +143,7 @@
 
 <script>
 export default {
+  props: ["on", "attrs"],
   data() {
     return {
       drawer: false,
