@@ -84,7 +84,11 @@
       <!-- User is auth -->
       <v-menu open-on-hover offset-y v-if="Object.entries(user).length">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn text v-bind="attrs" v-on="on">{{ user.personaname }}</v-btn>
+          <v-btn text v-bind="attrs" v-on="on">
+            <span class="overflow-protector">{{
+              user.personaname
+            }}</span></v-btn
+          >
         </template>
 
         <v-list>
@@ -226,6 +230,13 @@ export default {
   color: gray !important;
   font-weight: bold;
   cursor: pointer;
+}
+
+.overflow-protector {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 130px;
 }
 </style>
 
