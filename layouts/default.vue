@@ -3,6 +3,36 @@
     <!-- Side bar -->
     <v-navigation-drawer v-model="drawer" fixed app temporary color="#333333">
       <v-list>
+        <v-list-item v-if="Object.entries(user).length">
+          <nuxt-link :to="{ name: 'user-id', params: { id: user.steamid } }"
+            >Profile Overview</nuxt-link
+          >
+        </v-list-item>
+        <v-list-item v-else>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <div class="nav-disabled" v-bind="attrs" v-on="on">
+                Profile Overview
+              </div>
+            </template>
+            <span>Must be logged in to compare libraries.</span>
+          </v-tooltip>
+        </v-list-item>
+        <v-list-item class="hidden-md-and-up">
+          <nuxt-link
+            :to="{ name: 'user-friendselect' }"
+            v-if="Object.entries(user).length"
+            >Compare Libraries</nuxt-link
+          >
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-list-item
+          v-if="Object.entries(user).length"
+          class="hidden-md-and-up"
+        >
+          <nuxt-link to="/games">Games</nuxt-link>
+        </v-list-item>
+        <v-divider class="hidden-md-and-up"></v-divider>
         <v-list-item>
           <nuxt-link to="/changelogs">Change Logs</nuxt-link>
         </v-list-item>
@@ -16,10 +46,6 @@
         <v-list-item>
           <nuxt-link to="/developers">Developers</nuxt-link>
         </v-list-item>
-        <!-- <v-divider></v-divider>
-        <v-list-item>
-          <nuxt-link to="/blog">Blog</nuxt-link>
-        </v-list-item>-->
         <v-divider></v-divider>
         <v-list-item>
           <nuxt-link to="/about">About</nuxt-link>
@@ -33,13 +59,28 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
       <v-spacer />
-      <v-btn text>
+      <v-btn text class="hidden-sm-and-down">
         <nuxt-link to="/games">Games</nuxt-link>
       </v-btn>
+      <v-btn text v-if="Object.entries(user).length" class="hidden-sm-and-down">
+        <nuxt-link :to="{ name: 'user-friendselect' }"
+          >Compare Libraries</nuxt-link
+        >
+      </v-btn>
+      <v-tooltip bottom v-else>
+        <template v-slot:activator="{ on, attrs }">
+          <div class="disabled" v-bind="attrs" v-on="on">
+            Compare Libraries
+          </div>
+        </template>
+        <span>Must be logged in to compare libraries.</span>
+      </v-tooltip>
+
       <!-- User not auth -->
-      <v-btn text v-if="!Object.entries(user).length">
+      <v-btn text v-if="!Object.entries(user).length" v-bind="attrs" v-on="on">
         <a :href="loginLink()">login</a>
       </v-btn>
+
       <!-- User is auth -->
       <v-menu open-on-hover offset-y v-if="Object.entries(user).length">
         <template v-slot:activator="{ on, attrs }">
@@ -47,12 +88,6 @@
         </template>
 
         <v-list>
-          <v-list-item>
-            <nuxt-link :to="{ name: 'user-id', params: { id: user.steamid }}">Profile Overview</nuxt-link>
-          </v-list-item>
-          <v-list-item>
-            <nuxt-link :to="{ name: 'user-friendselect'}">Compare Libraries</nuxt-link>
-          </v-list-item>
           <v-list-item>
             <div class="fake-link" @click="logout()">Logout</div>
           </v-list-item>
@@ -92,7 +127,8 @@
               href="https://twitter.com/VBubbaa"
               target="_blank"
               class="custom-link"
-            >vBubbaa</a>
+              >vBubbaa</a
+            >
             <v-icon color="#ed254e">mdi-heart</v-icon>
           </v-col>
         </v-row>
@@ -107,7 +143,7 @@ export default {
     return {
       drawer: false,
       fixed: true,
-      title: "Steam Comparer",
+      title: "Steam Comparer"
     };
   },
 
@@ -141,7 +177,7 @@ export default {
       } else {
         return "http://127.0.0.1:8000/openid/steam/login/";
       }
-    },
+    }
   },
 
   // Check for auth cookie
@@ -149,7 +185,10 @@ export default {
     // Format the cookie to correct JSON and parse it
     if (this.getCookieValue("steam_data") != "") {
       let user = this.getCookieValue("steam_data").replace(/\\054/g, ",");
-      user = user.replace(/'/g, '"').replace(/"{/g, "{").replace(/}"/g, "}");
+      user = user
+        .replace(/'/g, '"')
+        .replace(/"{/g, "{")
+        .replace(/}"/g, "}");
       user = JSON.parse(user);
       // Update the vuex state user to the new logged in user
       this.$store.commit("SET_USER", user);
@@ -161,8 +200,8 @@ export default {
   computed: {
     user() {
       return this.$store.state.user;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -174,6 +213,19 @@ export default {
 .main-wrap {
   width: 100%;
   height: 100%;
+}
+
+.disabled {
+  color: gray !important;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.nav-disabled {
+  color: gray !important;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>
 
@@ -219,6 +271,4 @@ a:hover {
 .contact-icon {
   color: #ed254e !important;
 }
-</style>
-  
 </style>
