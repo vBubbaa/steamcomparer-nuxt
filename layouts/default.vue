@@ -26,6 +26,10 @@
           >
         </v-list-item>
         <v-divider></v-divider>
+        <v-list-item>
+          <nuxt-link :to="{ name: 'user-usersearch' }">Search Users</nuxt-link>
+        </v-list-item>
+        <v-divider></v-divider>
         <v-list-item
           v-if="Object.entries(user).length"
           class="hidden-md-and-up"

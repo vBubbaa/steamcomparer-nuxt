@@ -308,7 +308,7 @@ export default {
   name: "profiledetail",
   components: {
     CountryFlag,
-    MiniGameCard,
+    MiniGameCard
   },
   head() {
     return {
@@ -318,9 +318,9 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: `Steam profile overview for ${this.userdata.userdetails.response.players.player[0].personaname}, including Vac Ban information and the user's game library.`,
-        },
-      ],
+          content: `Steam profile overview for ${this.userdata.userdetails.response.players.player[0].personaname}, including Vac Ban information and the user's game library.`
+        }
+      ]
     };
   },
 
@@ -333,27 +333,27 @@ export default {
         {
           text: "App",
           value: "image",
-          sortable: false,
+          sortable: false
         },
         {
           text: "Name",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         {
           text: "App ID",
-          value: "appid",
+          value: "appid"
         },
         {
           text: "Total Playtime",
-          value: "total_playtime",
+          value: "total_playtime"
         },
         {
           text: "Current Price",
-          value: "current_price",
-        },
-      ],
+          value: "current_price"
+        }
+      ]
     };
   },
 
@@ -363,7 +363,7 @@ export default {
     const userdata = await $axios.$get(`/api/user/useroverview/${params.id}/`);
 
     return {
-      userdata: userdata,
+      userdata: userdata
     };
   },
 
@@ -392,8 +392,8 @@ export default {
         this.timeout = true;
         setTimeout(() => (this.timeout = false), 10000);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
