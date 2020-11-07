@@ -63,14 +63,19 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
       <v-spacer />
-      <v-btn text class="hidden-sm-and-down">
-        <nuxt-link to="/games">Games</nuxt-link>
-      </v-btn>
-      <v-btn text v-if="Object.entries(user).length" class="hidden-sm-and-down">
-        <nuxt-link :to="{ name: 'user-friendselect' }"
-          >Compare Libraries</nuxt-link
-        >
-      </v-btn>
+      <nuxt-link to="/games">
+        <v-btn text class="hidden-sm-and-down">
+          Games
+        </v-btn>
+      </nuxt-link>
+      <nuxt-link
+        :to="{ name: 'user-friendselect' }"
+        v-if="Object.entries(user).length"
+      >
+        <v-btn text class="hidden-sm-and-down">
+          Compare Libraries
+        </v-btn>
+      </nuxt-link>
       <v-tooltip bottom v-else>
         <template v-slot:activator="{ on, attrs }">
           <div class="disabled" v-bind="attrs" v-on="on">
@@ -242,6 +247,10 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 130px;
+}
+
+.theme--dark.v-btn {
+  color: inherit;
 }
 </style>
 

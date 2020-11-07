@@ -275,7 +275,16 @@
       </v-row>
       <v-row v-else>
         <v-col cols="12" class="text-center">User Library</v-col>
-        <v-col cols="12">
+        <v-col cols="12" v-if="$vuetify.breakpoint.mobile">
+          <v-data-table
+            :headers="mobileHeaders"
+            :items="games"
+            :items-per-page="10"
+            class="elevation-1"
+          >
+          </v-data-table>
+        </v-col>
+        <v-col cols="12" v-else>
           <v-data-table
             :headers="headers"
             :items="games"
@@ -283,14 +292,12 @@
             class="elevation-1"
           >
             <template v-slot:item.image="{ item }">
-              <div class="p-2">
-                <v-img
-                  :src="item.image"
-                  :alt="item.name"
-                  height="200"
-                  contain
-                ></v-img>
-              </div>
+              <v-img
+                :src="item.image"
+                :alt="item.name"
+                height="150"
+                contain
+              ></v-img>
             </template>
           </v-data-table>
         </v-col>
@@ -335,6 +342,26 @@ export default {
           value: "image",
           sortable: false
         },
+        {
+          text: "Name",
+          align: "start",
+          sortable: false,
+          value: "name"
+        },
+        {
+          text: "App ID",
+          value: "appid"
+        },
+        {
+          text: "Total Playtime",
+          value: "total_playtime"
+        },
+        {
+          text: "Current Price",
+          value: "current_price"
+        }
+      ],
+      mobileHeaders: [
         {
           text: "Name",
           align: "start",
