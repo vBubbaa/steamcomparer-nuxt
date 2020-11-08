@@ -275,6 +275,13 @@
       </v-row>
       <v-row v-else>
         <v-col cols="12" class="text-center">User Library</v-col>
+        <v-col cols="6" class="text-center"
+          >Library Cost: <span class="green-text">${{ libcost }}</span></v-col
+        >
+        <v-col cols="6" class="text-center"
+          >Excluded Apps (Not in DB):
+          <span class="red-text">{{ appsNotInDB }}</span></v-col
+        >
         <v-col cols="12" v-if="$vuetify.breakpoint.mobile">
           <v-data-table
             :headers="mobileHeaders"
@@ -334,6 +341,8 @@ export default {
   data() {
     return {
       games: null,
+      libCost: null,
+      appsNotInDB: null,
       timeout: false,
       errorCatch: false,
       headers: [
@@ -412,7 +421,10 @@ export default {
         let res = await this.$axios.$get(
           `/api/user/useroverview/${this.$route.params.id}/games/`
         );
+        console.log(res);
         this.games = res.games;
+        this.libcost = res.libcost;
+        this.appsNotInDB = res.appsNotInDB;
         this.errorCatch = false;
       } catch (error) {
         this.errorCatch = true;
@@ -425,6 +437,14 @@ export default {
 </script>
 
 <style scoped>
+.green-text {
+  color: #32a852;
+}
+
+.red-text {
+  color: #ed254e;
+}
+
 .td-link {
   color: #ed254e !important;
 }
